@@ -12,14 +12,21 @@ app.get('/', (req, res) => {
 app.get('/sms', async (req, res) => {
   const mobile = req.query.mobile || req.query.recipient || req.query.to;
   const message = req.query.message || req.query.Message || "Punch hua";
+
   console.log("OnTime se aaya:", mobile, message);
+
   if (mobile) {
-    await axios.post(`https://graph.facebook.com/v21.0/${PHONE_ID}/messages`, {
-      messaging_product: "whatsapp",
-      to: mobile,
-      type: "text",
-      text: { body: message }
-    }, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    try {
+      await axios.post(`https://graph.facebook.com/v21.0/${PHONE_ID}/messages`, {
+        messaging_product: "whatsapp",
+        to: mobile,
+        type: "text",
+        text: { body: message }
+      }, { headers: { Authorization: `Bearer ${TOKEN}` } });
+      console.log("Bhej diya");
+    } catch (e) {
+      console.log("Meta Error:", e.response?.data || e.message);
+    }
   }
   res.send("OK");
 });
