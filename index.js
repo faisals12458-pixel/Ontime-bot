@@ -2,8 +2,12 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 
-const TOKEN = "APNA_META_TOKEN_YAHAN";
-const PHONE_ID = "APNA_PHONE_ID_YAHAN";
+const TOKEN = process.env.TOKEN || "APNA_META_TOKEN_YAHAN";
+const PHONE_ID = process.env.PHONE_ID || "APNA_PHONE_ID_YAHAN";
+
+app.get('/', (req, res) => {
+  res.send("Ontime Bot Chal Raha Hai");
+});
 
 app.get('/sms', async (req, res) => {
   const mobile = req.query.mobile || req.query.recipient || req.query.to;
@@ -20,4 +24,4 @@ app.get('/sms', async (req, res) => {
   res.send("OK");
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
